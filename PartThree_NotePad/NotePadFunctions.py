@@ -1,3 +1,4 @@
+import os
 import traceback
 from PyQt6.QtGui import QFont, QTextCharFormat, QIcon
 from PyQt6.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox, QFontDialog, QColorDialog
@@ -196,7 +197,8 @@ def error_handler(etype, value, tb):
     raise error_msg
 
 sys.excepthook = error_handler
+basedir = os.path.dirname(__file__)
 app = QApplication(sys.argv)
-app.setWindowIcon(QIcon('images/notepad.ico'))
+app.setWindowIcon(QIcon(os.path.join(basedir, "images", 'notepad.ico')))
 Note = NotePadFunctions()
 sys.exit(app.exec())

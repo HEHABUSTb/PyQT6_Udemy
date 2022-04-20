@@ -2,13 +2,14 @@
 
 
 block_cipher = None
-
+added_files = [('images//*.png', 'images'), ('images//notepad.ico', 'images')]
+		
 
 
 a = Analysis(['NotePadFunctions.py'],
              pathex=[],
              binaries=[],
-             datas=[('images//*.png', 'images')],
+             datas=added_files,
              hiddenimports=[],
              hookspath=[],
              hooksconfig={},
