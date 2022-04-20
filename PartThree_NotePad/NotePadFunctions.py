@@ -1,9 +1,8 @@
 import traceback
-
-from PyQt6.QtGui import QFont, QTextCharFormat
-from PyQt6.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox
+from PyQt6.QtGui import QFont, QTextCharFormat, QIcon
+from PyQt6.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox, QFontDialog, QColorDialog
 from  PyQt6.QtPrintSupport import QPrintDialog, QPrinter, QPrintPreviewDialog
-from  PyQt6.QtCore import QFileInfo
+from PyQt6.QtCore import QFileInfo, Qt
 import sys
 from NotePad import Ui_NotePadApp
 
@@ -30,6 +29,17 @@ class NotePadFunctions(QMainWindow, Ui_NotePadApp):
         self.actionPaste.triggered.connect(self.textEdit.paste)
 
         self.actionBold.triggered.connect(self.set_bold)
+        self.actionItalic.triggered.connect(self.set_italic)
+        self.actionUnderline.triggered.connect(self.set_underline)
+
+        self.actionCenter.triggered.connect(self.align_center)
+        self.actionLeft.triggered.connect(self.align_left)
+        self.actionRight.triggered.connect(self.align_right)
+        self.actionJustify.triggered.connect(self.justify)
+
+        self.actionFont.triggered.connect(self.font_dialog)
+        self.actionColor.triggered.connect(self.color_dialog)
+        self.actionAbout_App.triggered.connect(self.about_app)
 
 
     def save_file(self):
@@ -46,7 +56,8 @@ class NotePadFunctions(QMainWindow, Ui_NotePadApp):
 
     def maybe_save(self):
         if self.textEdit.document().isEmpty():
-            return True
+            bold = True
+
 
         question = QMessageBox.warning(self, 'Application',
                                        'The document has been modified. \n Do you want to save it?',
@@ -122,6 +133,24 @@ class NotePadFunctions(QMainWindow, Ui_NotePadApp):
             # format.setFont(font)
             # self.textEdit.textCursor().mergeCharFormat(format)
 
+    def set_italic(self):
+        format = self.textEdit.textCursor().charFormat()
+        italic = format.font().italic()
+
+        if italic is True:
+            self.textEdit.setFontItalic(False)
+        else:
+            self.textEdit.setFontItalic(True)
+
+    def set_underline(self):
+        format = self.textEdit.textCursor().charFormat()
+        italic = format.font().underline()
+
+        if italic is True:
+            self.textEdit.setFontUnderline(False)
+        else:
+            self.textEdit.setFontUnderline(True)
+
     def check_formatting(self):
         # assume no format by default
         bold = italic = underline = False
@@ -137,23 +166,37 @@ class NotePadFunctions(QMainWindow, Ui_NotePadApp):
 
         return bold, italic, underline
 
+    def align_left(self):
+        self.textEdit.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
+    def align_center(self):
+        self.textEdit.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
+    def align_right(self):
+        self.textEdit.setAlignment(Qt.AlignmentFlag.AlignRight)
 
+    def justify(self):
+        self.textEdit.setAlignment(Qt.AlignmentFlag.AlignJustify)
 
+    def font_dialog(self):
+        font, ok = QFontDialog.getFont()
 
+        if ok:
+            self.textEdit.setFont(font)
 
+    def color_dialog(self):
+        color = QColorDialog.getColor()
+        self.textEdit.setTextColor(color)
 
-
-
+    def about_app(self):
+        QMessageBox.about(self, 'About App', 'This is my simple notepad')
 
 def error_handler(etype, value, tb):
     error_msg = ''.join(traceback.format_exception(etype, value, tb))
     raise error_msg
 
-
-
 sys.excepthook = error_handler
 app = QApplication(sys.argv)
+app.setWindowIcon(QIcon('images/notepad.ico'))
 Note = NotePadFunctions()
 sys.exit(app.exec())
