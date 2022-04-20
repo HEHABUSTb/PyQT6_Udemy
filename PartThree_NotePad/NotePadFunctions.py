@@ -29,8 +29,8 @@ class NotePadFunctions(QMainWindow, Ui_NotePadApp):
         self.actionCopy.triggered.connect(self.textEdit.copy)
         self.actionPaste.triggered.connect(self.textEdit.paste)
 
-        self.actionBold.triggered.connect(self.set_bold_2)
-        self.actionItalic.triggered.connect(self.set_bold_2)
+        self.actionBold.triggered.connect(self.set_bold)
+
 
     def save_file(self):
         filename = QFileDialog.getSaveFileName(self, "Save File")
@@ -105,30 +105,22 @@ class NotePadFunctions(QMainWindow, Ui_NotePadApp):
             self.close()
 
     def set_bold(self):
-        font = QFont()
-        font.setBold(True)
-        #self.textEdit.setFont(font)
-        text = self.textEdit.textCursor().selectedText()
-        print(text.format())
+        # font = QFont()
+        # format = QTextCharFormat()
+        # bold, italic, underline = self.check_formatting()
+        format = self.textEdit.textCursor().charFormat()
+        bold = format.font().bold()
 
-        format = QTextCharFormat()
-        format.setFont(font)
-        self.textEdit.textCursor().mergeCharFormat(format)
-
-    def set_bold_2(self):
-        font = QFont()
-        font.setBold(True)
-
-        if self.check_formatting() is True:
-            font.setBold(False)
-            format = QTextCharFormat()
-            format.setFont(font)
-            self.textEdit.textCursor().mergeCharFormat(format)
+        if bold is True:
+            # print(self.textEdit.fontWeight())
+            self.textEdit.setFontWeight(400)
         else:
-            format = QTextCharFormat()
-            format.setFont(font)
-            self.textEdit.textCursor().mergeCharFormat(format)
+            self.textEdit.setFontWeight(700)
 
+            """Previous realisation"""
+            # font.setBold(True)
+            # format.setFont(font)
+            # self.textEdit.textCursor().mergeCharFormat(format)
 
     def check_formatting(self):
         # assume no format by default
@@ -137,7 +129,14 @@ class NotePadFunctions(QMainWindow, Ui_NotePadApp):
         format = self.textEdit.textCursor().charFormat()
 
         if format.font().bold() is True:
-            return True
+            bold = True
+        if format.font().italic() is True:
+            italic = True
+        if format.font().underline() is True:
+            underline = True
+
+        return bold, italic, underline
+
 
 
 
