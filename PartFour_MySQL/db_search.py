@@ -108,9 +108,6 @@ class Ui_Form(object):
                 self.label_result.setStyleSheet("color: green")
                 self.label_result.setText(row[0])
 
-
-
-
         except mc.Error as e:
             print(e)
 
