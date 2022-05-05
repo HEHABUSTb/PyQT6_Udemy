@@ -1,1 +1,3 @@
-PyQT6==6.2.3
+PyQt6-Charts==6.3.0
+mysql-connector-python~=8.0.28
+PyQt6~=6.3.0
