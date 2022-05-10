@@ -1,4 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
+import mysql.connector as mc
+from PyQt6.QtWidgets import QTableWidget, QTableWidgetItem
 
 
 class ViewMembers_Dialog(object):
@@ -45,6 +47,8 @@ class ViewMembers_Dialog(object):
         self.retranslateUi(ViewMembers)
         QtCore.QMetaObject.connectSlotsByName(ViewMembers)
 
+        self.pushButton_viewmembres.clicked.connect(self.view_members)
+
     def retranslateUi(self, ViewMembers):
         _translate = QtCore.QCoreApplication.translate
         ViewMembers.setWindowTitle(_translate("ViewMembers", "Dialog"))
@@ -57,3 +61,28 @@ class ViewMembers_Dialog(object):
         item = self.tableWidget.horizontalHeaderItem(3)
         item.setText(_translate("ViewMembers", "Email"))
         self.pushButton_viewmembres.setText(_translate("ViewMembers", "View Members"))
+
+    def view_members(self):
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='library'
+            )
+
+            cursor = mydb.cursor()
+            cursor.execute('SELECT * FROM table_members')
+            result = cursor.fetchall()
+
+            self.tableWidget.setRowCount(0)
+
+            for row_number, row_data in enumerate(result):
+
+                self.tableWidget.insertRow(row_number)
+
+                for column_number, data in enumerate(row_data):
+                    self.tableWidget.setItem(row_number, column_number, QTableWidgetItem(str(data)))
+
+        except mc.Error as e:
+            print(e)
