@@ -2,7 +2,7 @@ import os
 import traceback
 from PyQt6.QtGui import QFont, QTextCharFormat, QIcon
 from PyQt6.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox, QFontDialog, QColorDialog
-from  PyQt6.QtPrintSupport import QPrintDialog, QPrinter, QPrintPreviewDialog
+from PyQt6.QtPrintSupport import QPrintDialog, QPrinter, QPrintPreviewDialog
 from PyQt6.QtCore import QFileInfo, Qt
 import sys
 from NotePad import Ui_NotePadApp

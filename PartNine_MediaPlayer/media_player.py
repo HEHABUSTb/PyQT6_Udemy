@@ -1,13 +1,10 @@
 import traceback
-
 from PyQt6.QtCore import Qt, QUrl
 from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QHBoxLayout, QVBoxLayout,\
-    QStyle, QSlider, QLabel, QFileDialog
-
+    QStyle, QSlider, QFileDialog
 from PyQt6.QtGui import QIcon
-from PyQt6.QtMultimedia import QMediaPlayer, QMediaFormat, QAudioOutput
+from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PyQt6.QtMultimediaWidgets import QVideoWidget
-
 import sys
 import os
 
@@ -22,7 +19,7 @@ class Window(QWidget):
         self.setWindowIcon(QIcon(os.path.join(self.basedir, "images", 'player.ico')))
 
         self.audio_output = QAudioOutput()
-        self.media_player = QMediaPlayer(None)
+        self.media_player = QMediaPlayer()
         self.media_player.setAudioOutput(self.audio_output)
 
         self.video_widget = QVideoWidget()
@@ -42,12 +39,9 @@ class Window(QWidget):
         self.slider.sliderMoved.connect(self.set_position)
 
         # Media player signals
-        self.media_player.playbackStateChanged.connect(self.media_state_changed)
+        self.media_player.mediaStatusChanged.connect(self.media_state_changed)
         self.media_player.positionChanged.connect(self.position_changed)
         self.media_player.durationChanged.connect(self.duration_changed)
-
-
-
 
         hbox = QHBoxLayout()
         hbox.addWidget(self.button_open)
@@ -89,7 +83,6 @@ class Window(QWidget):
             self.button_play.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_MediaPause))
         else:
             self.button_play.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_MediaPlay))
-
 
 
 def error_handler(etype, value, tb):
