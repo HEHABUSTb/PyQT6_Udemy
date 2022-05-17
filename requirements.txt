@@ -1,3 +1,5 @@
 PyQt6-Charts==6.3.0
 mysql-connector-python~=8.0.28
 PyQt6~=6.3.0
+numpy~=1.22.3
+pyqtgraph~=0.12.4
